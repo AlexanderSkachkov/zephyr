@@ -2,6 +2,7 @@
  * Copyright (c) 2018 Workaround GmbH
  * Copyright (c) 2018 Allterco Robotics
  * Copyright (c) 2018 Linaro Limited
+ * Copyright (c) 2026 Movu robotics
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -771,7 +772,8 @@ void rtc_stm32_isr(const struct device *dev)
 	LL_EXTI_ClearRisingFlag_0_31(RTC_EXTI_LINE);
 #elif defined(CONFIG_SOC_SERIES_STM32U3X) \
 	|| defined(CONFIG_SOC_SERIES_STM32U5X) \
-	|| defined(CONFIG_SOC_SERIES_STM32WBAX)
+	|| defined(CONFIG_SOC_SERIES_STM32WBAX) \
+	|| defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* RTC is not connected to EXTI for these SoC series */
 #else
 	LL_EXTI_ClearFlag_0_31(RTC_EXTI_LINE);
@@ -847,7 +849,7 @@ static int rtc_stm32_init(const struct device *dev)
 	LL_C2_EXTI_EnableIT_0_31(RTC_EXTI_LINE);
 	LL_EXTI_EnableRisingTrig_0_31(RTC_EXTI_LINE);
 #elif defined(CONFIG_SOC_SERIES_STM32U3X) || defined(CONFIG_SOC_SERIES_STM32U5X) || \
-	  defined(CONFIG_SOC_SERIES_STM32WBAX)
+	  defined(CONFIG_SOC_SERIES_STM32WBAX) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* RTC is not connected to EXTI for these SoC series */
 #else
 	LL_EXTI_EnableIT_0_31(RTC_EXTI_LINE);

@@ -1,0 +1,13 @@
+# STM32WL3X radio timer configuration options
+
+# Copyright (c) 2025 STMicroelectronics
+# Copyright (c) 2026 Movu robotics
+# SPDX-License-Identifier: Apache-2.0
+
+config STM32WL3_RADIO_TIMER
+	bool "STM32 Radio Timer for WL3x"
+	default y if PM
+	depends on SOC_SERIES_STM32WL3X
+	select HAS_STM32LIB
+	select TICKLESS_CAPABLE
+	select SYSTEM_TIMER_HAS_DISABLE_SUPPORT

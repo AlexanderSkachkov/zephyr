@@ -4,6 +4,7 @@
  * Copyright (c) 2017-2022 Linaro Limited.
  * Copyright (c) 2017 RnDity Sp. z o.o.
  * Copyright (c) 2023 STMicroelectronics
+ * Copyright (c) 2026 Movu robotics
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -56,6 +57,8 @@
 #include <zephyr/dt-bindings/clock/stm32wb0_clock.h>
 #elif defined(CONFIG_SOC_SERIES_STM32WLX)
 #include <zephyr/dt-bindings/clock/stm32wl_clock.h>
+#elif defined(CONFIG_SOC_SERIES_STM32WL3X)
+#include <zephyr/dt-bindings/clock/stm32wl3_clock.h>
 #elif defined(CONFIG_SOC_SERIES_STM32H5X)
 #include <zephyr/dt-bindings/clock/stm32h5_clock.h>
 #elif defined(CONFIG_SOC_SERIES_STM32H7X)
@@ -960,6 +963,27 @@ typedef void (*lsi_update_cb_t)(uint32_t new_lsi_frequency);
  */
 int stm32wb0_register_lsi_update_callback(lsi_update_cb_t cb);
 #endif /* CONFIG_SOC_SERIES_STM32WB0X */
+
+#ifdef CONFIG_SOC_SERIES_STM32WL3X
+/**
+ * @internal
+ * @brief Type definition for LSI frequency update callbacks
+ */
+typedef void (*lsi_update_cb_t)(uint32_t new_lsi_frequency);
+
+/**
+ * @internal
+ * @brief Registers a callback to invoke after each runtime measure and
+ * update of the LSI frequency is completed.
+ *
+ * @param cb		Callback to invoke
+ * @return 0		Registration successful
+ * @return ENOMEM	Too many callbacks registered
+ *
+ * @note Callbacks are NEVER invoked if runtime LSI measurement is disabled
+ */
+int stm32wl3_register_lsi_update_callback(lsi_update_cb_t cb);
+#endif /* CONFIG_SOC_SERIES_STM32WL3X */
 
 /** @endcond */
 #endif /* ZEPHYR_INCLUDE_DRIVERS_CLOCK_CONTROL_STM32_CLOCK_CONTROL_H_ */

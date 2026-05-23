@@ -1,0 +1,11 @@
+sample:
+  name: STM32WL3X MCU series radio RX test application (based on the STM32CubeWL3 samples)
+  description: This application utilises the MRSubG radio IP and sequencer to receive data and send an acknowledgement.
+tests:
+  sample.boards.stm32.mrsubg_seq_rx:
+    harness: radio
+    platform_allow:
+      - nucleo_wl33cc
+    tags:
+      - uart
+      - mrsubg

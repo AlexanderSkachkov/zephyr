@@ -2,6 +2,7 @@
 
 # Copyright (c) 2016 Open-RnD Sp. z o.o.
 # Copyright (c) 2025 Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>
+# Copyright (c) 2026 Movu robotics
 # SPDX-License-Identifier: Apache-2.0
 
 if SOC_FAMILY_STM32
@@ -26,5 +27,12 @@ config GPIO_INTC_STM32WB0
 	depends on DT_HAS_ST_STM32WB0_GPIO_INTC_ENABLED
 	help
 	  Enable GPIO interrupt controller driver for STM32WB0 series
+
+config GPIO_INTC_STM32WL3
+	bool "GPIO Interrupt Controller Driver for STM32WL3 series"
+	default y
+	depends on DT_HAS_ST_STM32WL3_GPIO_INTC_ENABLED
+	help
+	  Enable GPIO interrupt controller driver for STM32WL3 series
 
 endif # SOC_FAMILY_STM32

@@ -1,0 +1,6 @@
+board:
+  name: nucleo_wl33cc
+  full_name: Nucleo WL3CC
+  vendor: st
+  socs:
+    - name: stm32wl33

@@ -2,6 +2,7 @@
  * Copyright (c) 2016 Open-RnD Sp. z o.o.
  * Copyright (c) 2016 Linaro Limited.
  * Copyright (c) 2024 STMicroelectronics
+ * Copyright (c) 2026 Movu robotics
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -168,7 +169,7 @@ static void uart_stm32_pm_policy_state_lock_get_unconditional(void)
 #if defined(CONFIG_PM) && defined(IS_UART_WAKEUP_FROMSTOP_INSTANCE)
 static void uart_stm32_pm_enable_wakeup_line(uint32_t wakeup_line)
 {
-#if defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	ARG_UNUSED(wakeup_line);
 #if defined(PWR_CR3_EIWL2)
 	/**
@@ -182,7 +183,7 @@ static void uart_stm32_pm_enable_wakeup_line(uint32_t wakeup_line)
 		/* Enable EXTI line associated to UART wake-up event */
 		stm32_exti_enable(wakeup_line, STM32_EXTI_TRIG_NONE, STM32_EXTI_MODE_IT);
 	}
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X */
 }
 #endif /* CONFIG_PM && IS_UART_WAKEUP_FROMSTOP_INSTANCE */
 
@@ -2372,9 +2373,9 @@ static int uart_stm32_registers_configure(const struct device *dev)
 		LL_USART_ClearFlag_WKUP(usart);
 #endif /* USART_CR3_WUFIE */
 
-#if !defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(USART_CR1_UESM)
+#if (!defined(CONFIG_SOC_SERIES_STM32WB0X) && !defined(CONFIG_SOC_SERIES_STM32WL3X)) || defined(USART_CR1_UESM)
 		LL_USART_EnableInStopMode(usart);
-#endif /* !CONFIG_SOC_SERIES_STM32WB0X || USART_CR1_UESM */
+#endif /* (!CONFIG_SOC_SERIES_STM32WB0X && !CONFIG_SOC_SERIES_STM32WL3X) || USART_CR1_UESM */
 
 		/* Enable the wake-up line signal (if applicable to hardware) */
 		uart_stm32_pm_enable_wakeup_line(config->wakeup_line);

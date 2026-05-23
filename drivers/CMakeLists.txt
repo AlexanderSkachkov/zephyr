@@ -103,4 +103,5 @@ add_subdirectory_ifdef(CONFIG_WATCHDOG watchdog)
 add_subdirectory_ifdef(CONFIG_WIFI wifi)
 add_subdirectory_ifdef(CONFIG_WUC wuc)
 add_subdirectory_ifdef(CONFIG_XEN xen)
+add_subdirectory_ifdef(CONFIG_MRSUBG_STM32WL3 mrsubg)
 # zephyr-keep-sorted-stop

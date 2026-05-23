@@ -1,6 +1,7 @@
 # STM32CUBE HAL config
 
 # Copyright (c) 2016 Linaro Limited.
+# Copyright (c) 2026 Movu robotics.
 # SPDX-License-Identifier: Apache-2.0
 
 config ZEPHYR_HAL_STM32_MODULE
@@ -371,6 +372,16 @@ config USE_STM32_HAL_LCD
 	bool
 	help
 	  Enable STM32Cube LCD controller (LCD) HAL module driver
+
+config USE_STM32_HAL_MRSUBG
+	bool
+	help
+		Enable STM32Cube MRSUBG controller (SubGhz Radio) HAL module driver
+
+config USE_STM32_HAL_MRSUBG_TIMER
+	bool
+	help
+		Enable STM32Cube MRSUBG controller (SubGhz Radio) Timer HAL module driver
 
 config USE_STM32_HAL_LPTIM
 	bool

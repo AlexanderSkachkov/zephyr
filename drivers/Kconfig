@@ -102,6 +102,7 @@ source "drivers/watchdog/Kconfig"
 source "drivers/wifi/Kconfig"
 source "drivers/wuc/Kconfig"
 source "drivers/xen/Kconfig"
+source "drivers/mrsubg/Kconfig"
 # zephyr-keep-sorted-stop
 
 source "drivers/tee/Kconfig"

@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016 Open-RnD Sp. z o.o.
  * Copyright (C) 2025 Savoir-faire Linux, Inc.
+ * Copyright (c) 2026 Movu robotics.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -161,7 +162,7 @@ static int gpio_stm32_pincfg_to_flags(struct gpio_stm32_pin pin_cfg,
 
 __maybe_unused static inline uint32_t ll_gpio_get_pin_pull(GPIO_TypeDef *GPIOx, uint32_t Pin)
 {
-#if defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* On STM32WB0, the PWRC PU/PD control registers should be used instead
 	 * of the GPIO controller registers, so we cannot use LL_GPIO_GetPinPull.
 	 */
@@ -176,7 +177,7 @@ __maybe_unused static inline uint32_t ll_gpio_get_pin_pull(GPIO_TypeDef *GPIOx, 
 	}
 #else
 	return LL_GPIO_GetPinPull(GPIOx, Pin);
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X */
 }
 
 static inline void gpio_stm32_disable_pin_irqs(uint32_t port, gpio_pin_t pin)
@@ -422,7 +423,7 @@ static int gpio_stm32_pin_interrupt_configure(const struct device *dev,
 
 	if (mode == GPIO_INT_MODE_LEVEL) {
 		/* Level-sensitive interrupts are only supported on STM32WB0. */
-		if (!IS_ENABLED(CONFIG_SOC_SERIES_STM32WB0X)) {
+		if (!IS_ENABLED(CONFIG_SOC_SERIES_STM32WB0X) && !IS_ENABLED(CONFIG_SOC_SERIES_STM32WL3X)) {
 			err = -ENOTSUP;
 			goto exit;
 		} else {

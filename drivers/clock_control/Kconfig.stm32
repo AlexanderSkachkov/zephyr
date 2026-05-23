@@ -3,6 +3,7 @@
 # Copyright (c) 2017 Linaro
 # Copyright (c) 2017 RnDity Sp. z o.o.
 # Copyright (C) 2025 Savoir-faire Linux, Inc.
+# Copyright (c) 2026 Movu robotics
 # SPDX-License-Identifier: Apache-2.0
 
 menuconfig CLOCK_CONTROL_STM32_CUBE
@@ -101,6 +102,33 @@ config STM32WB0_LSI_RUNTIME_MEASUREMENT_INTERVAL
 	  treated as LSI frequency for the lifetime of the application.
 
 endmenu # DT_HAS_ST_STM32WB0_LSI_CLOCK_ENABLED
+
+menu "STM32WL3 LSI options"
+	depends on DT_HAS_ST_STM32WL3_LSI_CLOCK_ENABLED
+
+config STM32WL3_LSI_RUNTIME_MEASUREMENT_INTERVAL
+	int "LSI run-time measurement interval (ms)"
+	default 0
+	help
+	  Interval at which runtime measurements should be performed, in milliseconds
+
+	  Since the LSI RC frequency is affected by temperature, which is not stable
+	  across time, it is recommended to perform measurements of the LSI frequency
+	  at regular intervals to obtain better accuracy.
+
+	  This property enables runtime LSI measurement if present. In this case,
+	  a background thread is created and performs LSI measurements, sleeping
+	  the amount of time specified in this property between each measure. This
+	  thread is also tasked with updating the control registers of peripherals
+	  affected by slow clock drift such as RTC or IWDG, in collaboration with
+	  the peripherals' drivers. Note that this increases the memory footprint
+	  of the clock control driver, and may increase power consumption.
+
+	  Setting this option to the default value of "0" disables runtime frequency
+	  measurements - the result of a single measure performed at boot will be
+	  treated as LSI frequency for the lifetime of the application.
+
+endmenu # DT_HAS_ST_STM32WL3_LSI_CLOCK_ENABLED
 
 # Micro-controller Clock Output (MCO) configuration options
 config CLOCK_STM32_MCO

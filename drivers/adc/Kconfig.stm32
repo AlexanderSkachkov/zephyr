@@ -6,6 +6,7 @@
 # Copyright (c) 2021 Marius Scholtz, RIC Electronics
 # Copyright (c) 2022 Hein Wessels, Nobleo Technology
 # Copyright (c) 2024 STMicroelectronics
+# Copyright (c) 2026 Movu robotics
 # SPDX-License-Identifier: Apache-2.0
 
 ADC_STM32_INJECTED_SUPPORT := st,adc-has-injected-support
@@ -29,7 +30,15 @@ config ADC_STM32WB0
 	help
 	  Enable the driver implementation for the STM32WB0 series ADC
 
-if ADC_STM32 || ADC_STM32WB0
+config ADC_STM32WL3
+	bool "STM32WL3 ADC driver"
+	default y
+	depends on DT_HAS_ST_STM32WL3_ADC_ENABLED
+	select PINCTRL
+	help
+	  Enable the driver implementation for the STM32WL3 series ADC
+
+if ADC_STM32 || ADC_STM32WB0 || ADC_STM32WL3
 
 config ADC_STM32_DMA
 	bool "STM32 MCU ADC DMA Support"

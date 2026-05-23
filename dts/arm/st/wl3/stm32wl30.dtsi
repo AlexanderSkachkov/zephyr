@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2024 STMicroelectronics
+ * Copyright (c) 2026 Movu robotics
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <st/wl3/stm32wl3.dtsi>
+
+/ {
+	soc {
+		compatible = "st,stm32wl30", "st,stm32wl3", "simple-bus";
+	};
+};
+

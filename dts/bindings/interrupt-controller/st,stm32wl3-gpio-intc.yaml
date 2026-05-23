@@ -1,0 +1,9 @@
+# Copyright (c) 2024 STMicroelectronics
+# Copyright (c) 2026 Movu robotics
+# SPDX-License-Identifier: Apache-2.0
+
+description: STM32WL3 GPIO Interrupt Controller
+
+compatible: "st,stm32wl3-gpio-intc"
+
+include: "st,stm32-exti.yaml"

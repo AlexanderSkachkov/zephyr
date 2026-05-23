@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016 Linaro Limited.
  * Copyright (c) 2019 Song Qiang <songqiang1304521@gmail.com>
+ * Copyright (c) 2026 Movu robotics
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -815,7 +816,7 @@ static void dma_stm32_config_irq_0(const struct device *dev)
 	DMA_STM32_IRQ_CONNECT(0, 0);
 
 	/* On STM32WB0 series, there is a single IRQ line for all channels */
-#if !defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if !defined(CONFIG_SOC_SERIES_STM32WB0X) && !defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* On other series, the sharing follows a pattern:
 	 *	IRQn (X+0) is not shared (assigned to DMA1 channel 1)
 	 *	IRQn (X+1) is shared by DMA1 channels 2 and 3
@@ -832,7 +833,7 @@ static void dma_stm32_config_irq_0(const struct device *dev)
 #if DT_INST_IRQ_HAS_IDX(0, 3)
 	DMA_STM32_IRQ_CONNECT(0, 3);
 #endif /* DT_INST_IRQ_HAS_IDX(0, 3) */
-#endif /* !CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* !CONFIG_SOC_SERIES_STM32WB0X & !CONFIG_SOC_SERIES_STM32WL3X */
 #endif /* !CONFIG_DMA_STM32_SHARED_IRQS */
 }
 

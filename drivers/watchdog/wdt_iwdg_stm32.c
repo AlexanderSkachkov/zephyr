@@ -3,6 +3,7 @@
  * Copyright (c) 2017 RnDity Sp. z o.o.
  * Copyright (c) 2018 qianfan Zhao
  * Copyright (c) 2020 Libre Solar Technologies GmbH
+ * Copyright (c) 2026 Movu robotics
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -123,7 +124,7 @@ static int iwdg_stm32_setup(const struct device *dev, uint8_t options)
 
 	/* Deactivate running when debugger is attached. */
 	if (options & WDT_OPT_PAUSE_HALTED_BY_DBG) {
-#if defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 		/* STM32WB0 watchdog does not support halt by debugger */
 		return -ENOTSUP;
 #else
@@ -272,7 +273,7 @@ static int iwdg_stm32_init(const struct device *dev)
 	if (err < 0) {
 		return err;
 	}
-#if defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/**
 	 * On STM32WB0, application must wait two slow clock cycles
 	 * before accessing the IWDG IP after turning on the WDGEN
@@ -297,7 +298,7 @@ static int iwdg_stm32_init(const struct device *dev)
 
 	/* Clear WDRSTF bit after polling completes */
 	LL_RCC_ClearFlag_WDGRSTREL();
-#endif /* defined(CONFIG_SOC_SERIES_STM32WB0X) */
+#endif /* defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X) */
 #endif /* DT_INST_NODE_HAS_PROP(0, clocks) */
 
 	/*

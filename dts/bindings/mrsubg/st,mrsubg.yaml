@@ -1,0 +1,5 @@
+description: STM32WL3 MR_SUBG radio subsystem driver template
+
+compatible: "st,mrsubg"
+
+include: base.yaml

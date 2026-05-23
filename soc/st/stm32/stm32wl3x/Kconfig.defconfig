@@ -1,0 +1,28 @@
+# STMicroelectronics STM32WL3 MCU line
+
+# Copyright (c) 2024 STMicroelectronics
+# Copyright (c) 2026 Movu robotics
+# SPDX-License-Identifier: Apache-2.0
+
+if SOC_SERIES_STM32WL3X
+
+config NUM_IRQS
+	default 32
+
+if STM32WL3_RADIO_TIMER
+
+config SYS_CLOCK_TICKS_PER_SEC
+	default 32768
+
+config CORTEX_M_SYSTICK
+	default n
+
+DT_STM32WL3_RADIO_TIMER_PATH := $(dt_nodelabel_path,radio_timer)
+DT_STM32WL3_TIMER_FREQ := $(dt_node_int_prop_int,$(DT_STM32WL3_RADIO_TIMER_PATH),compensated-timer-freq)
+
+config SYS_CLOCK_HW_CYCLES_PER_SEC
+	default "$(DT_STM32WL3_TIMER_FREQ)"
+
+endif # STM32WL3_RADIO_TIMER
+
+endif # SOC_SERIES_STM32WL3X

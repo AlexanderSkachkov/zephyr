@@ -1,0 +1,17 @@
+# Copyright (c) 2024 STMicroelectronics
+# Copyright (c) 2026 Movu robotics
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  STM32WL3 LSI Clock
+
+  The STM32WL3 MCUs are equipped with a regular RC LSI clock with a frequency of 24~40kHz.
+  The SoCs are also equipped with hardware to perform LSI frequency measurement, which
+  allows to adapt all frequency-based calculations to a somewhat accurate value, ensuring
+  that the software does not get too much out of sync with real-world time.
+
+  Several LSI frequency measurement options can be configured via Kconfig.
+
+compatible: "st,stm32wl3-lsi-clock"
+
+include: [fixed-clock.yaml]

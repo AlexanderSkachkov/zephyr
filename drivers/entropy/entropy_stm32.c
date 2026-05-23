@@ -3,6 +3,7 @@
  * Copyright (c) 2018 Nordic Semiconductor ASA
  * Copyright (c) 2017 Exati Tecnologia Ltda.
  * Copyright (c) 2020 STMicroelectronics.
+ * Copyright (c) 2026 Movu robotics.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -344,14 +345,14 @@ static int recover_seed_error(RNG_TypeDef *rng)
 {
 	ll_rng_clear_seis(rng);
 
-#if !defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if !defined(CONFIG_SOC_SERIES_STM32WB0X) && !defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* After a noise source error is detected, 12 words must be read from the RNG_DR register
 	 * and discarded to restart the entropy generation.
 	 */
 	for (int i = 0; i < 12; ++i) {
 		(void)ll_rng_read_rand_data(rng);
 	}
-#endif /* !CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* !CONFIG_SOC_SERIES_STM32WB0X && !CONFIG_SOC_SERIES_STM32WL3X*/
 
 	if (ll_rng_is_active_seis(rng) != 0) {
 		return -EIO;

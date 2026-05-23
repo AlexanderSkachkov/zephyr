@@ -3,6 +3,7 @@
  * Copyright (c) 2023 Syslinbit
  * Copyright (c) 2024 STMicroelectronics
  * Copyright (c) 2025 Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>
+ * Copyright (c) 2026 Movu robotics
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -491,7 +492,7 @@ static int rtc_stm32_init(const struct device *dev)
 		return -EIO;
 	}
 
-#if defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/**
 	 * The STM32WB0 series has no bit for clock gating of RTC's APB
 	 * interface. On the other hand, the RTCEN bit that would control
@@ -519,7 +520,7 @@ static int rtc_stm32_init(const struct device *dev)
 	while (--i > 0) {
 		/* Do nothing - loop itself burns enough cycles */
 	}
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X*/
 
 	stm32_backup_domain_enable_access();
 
@@ -545,7 +546,7 @@ static int rtc_stm32_init(const struct device *dev)
  * by the STM32Cube package, but it's fine to skip calling it since
  * the RTC is already accessible thanks to clock_control_on() above.
  */
-#if !defined(CONFIG_SOC_SERIES_STM32WBAX)
+#if !defined(CONFIG_SOC_SERIES_STM32WBAX) && !defined(CONFIG_SOC_SERIES_STM32WL3X)
 	z_stm32_hsem_lock(CFG_HW_RCC_SEMID, HSEM_LOCK_DEFAULT_RETRY);
 
 #ifdef CONFIG_SOC_SERIES_STM32U3X
@@ -556,7 +557,7 @@ static int rtc_stm32_init(const struct device *dev)
 #endif /* CONFIG_SOC_SERIES_STM32U3X */
 
 	z_stm32_hsem_unlock(CFG_HW_RCC_SEMID);
-#endif /* !CONFIG_SOC_SERIES_STM32WBAX */
+#endif /* !CONFIG_SOC_SERIES_STM32WBAX && !CONFIG_SOC_SERIES_STM32WL3X */
 
 	err = rtc_stm32_configure(dev);
 

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2025 STMicroelectronics
+ * Copyright (c) 2026 Movu robotics
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -51,12 +52,12 @@ static inline uint32_t ll_rng_is_active_seis(RNG_TypeDef *RNGx)
 {
 #if defined(CONFIG_SOC_STM32WB09XX)
 	return LL_RNG_IsActiveFlag_ENTROPY_ERR(RNGx);
-#elif defined(CONFIG_SOC_SERIES_STM32WB0X)
+#elif defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* STM32WB05 / STM32WB06 / STM32WB07 */
 	return LL_RNG_IsActiveFlag_FAULT(RNGx);
 #else
 	return LL_RNG_IsActiveFlag_SEIS(RNGx);
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X */
 }
 
 static inline void ll_rng_clear_seis(RNG_TypeDef *RNGx)
@@ -64,41 +65,41 @@ static inline void ll_rng_clear_seis(RNG_TypeDef *RNGx)
 #if defined(CONFIG_SOC_STM32WB09XX)
 	LL_RNG_SetResetHealthErrorFlags(RNGx, 1);
 	stm32_reg_write(&RNGx->IRQ_SR, RNG_IRQ_SR_ERROR_IRQ);
-#elif defined(CONFIG_SOC_SERIES_STM32WB0X)
+#elif defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* STM32WB05 / STM32WB06 / STM32WB07 */
 	LL_RNG_ClearFlag_FAULT(RNGx);
 #else
 	LL_RNG_ClearFlag_SEIS(RNGx);
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X */
 }
 
 static inline uint32_t ll_rng_is_active_secs(RNG_TypeDef *RNGx)
 {
-#if !defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if !defined(CONFIG_SOC_SERIES_STM32WB0X) && !defined(CONFIG_SOC_SERIES_STM32WL3X)
 	return LL_RNG_IsActiveFlag_SECS(RNGx);
 #else
 	/**
-	 * STM32WB0x RNG has no equivalent of SECS.
+	 * STM32WB0x and STM32WL3x RNG has no equivalent of SECS.
 	 * Since this flag is always checked in conjunction
 	 * with FAULT (the SEIS equivalent), returning 0 is OK.
 	 */
 	return 0;
-#endif /* !CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* !CONFIG_SOC_SERIES_STM32WB0X && !CONFIG_SOC_SERIES_STM32WL3X*/
 }
 
 static inline uint32_t ll_rng_is_active_drdy(RNG_TypeDef *RNGx)
 {
 #if defined(CONFIG_SOC_STM32WB09XX)
 	return LL_RNG_IsActiveFlag_VAL_READY(RNGx);
-#elif defined(CONFIG_SOC_SERIES_STM32WB0X)
+#elif defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* STM32WB05 / STM32WB06 / STM32WB07 */
 	return LL_RNG_IsActiveFlag_RNGRDY(RNGx);
 #else
 	return LL_RNG_IsActiveFlag_DRDY(RNGx);
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X */
 }
 
-#if defined(CONFIG_SOC_SERIES_STM32WB0X) && !defined(CONFIG_SOC_STM32WB09XX)
+#if (defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)) && !defined(CONFIG_SOC_STM32WB09XX)
 /* STM32WB05, STM32WB06 and STM32WB07 have 16-bit data register */
 typedef uint16_t rng_sample_t;
 #else
@@ -122,10 +123,10 @@ static inline rng_sample_t ll_rng_read_rand_data(RNG_TypeDef *RNGx)
 	stm32_reg_write(&RNGx->IRQ_SR, RNG_IRQ_SR_FF_FULL_IRQ);
 
 	return rnd;
-#elif defined(CONFIG_SOC_SERIES_STM32WB0X)
+#elif defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* STM32WB05 / STM32WB06 / STM32WB07 */
 	return LL_RNG_ReadRandData16(RNGx);
 #else
 	return LL_RNG_ReadRandData32(RNGx);
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X */
 }

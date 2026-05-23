@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2024 STMicroelectronics
+ * Copyright (c) 2026 Movu robotics
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <st/wl3/stm32wl3.dtsi>
+
+/ {
+	soc {
+		compatible = "st,stm32wl33", "st,stm32wl3", "simple-bus";
+
+		adc1: adc@41006000 {
+			compatible = "st,stm32wl3-adc";
+			reg = <0x41006000 256>;
+			/* On STM32WL3, the two ADC clock domains (ANALOG / DIGITAL)
+			 * can be controlled independently. Expose this feature to
+			 * the driver by having two `clocks` property entries:
+			 *  - first entry is digital part of ADC block (always-on)
+			 *  - second entry is analog part of ADC block (on-demand)
+			 */
+			clocks = <&rcc STM32_CLOCK(APB1, 4)>,
+				 	 <&rcc STM32_CLOCK(APB1, 5)>;
+			interrupts = <12 0>;
+			#io-channel-cells = <1>;
+			status = "disabled";
+		};
+
+		i2c1: i2c@41000000 {
+			compatible = "st,stm32-i2c-v2";
+			clock-frequency = <I2C_BITRATE_STANDARD>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x41000000 DT_SIZE_K(1)>;
+			clocks = <&rcc STM32_CLOCK(APB1, 21)>;
+			interrupts = <3 0>;
+			interrupt-names = "combined";
+			status = "disabled";
+		};
+
+		i2c2: i2c@41001000 {
+			compatible = "st,stm32-i2c-v2";
+			clock-frequency = <I2C_BITRATE_STANDARD>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x41001000 DT_SIZE_K(1)>;
+			clocks = <&rcc STM32_CLOCK(APB1, 23)>;
+			interrupts = <4 0>;
+			interrupt-names = "combined";
+			status = "disabled";
+		};
+
+		spi1: spi@41002000 {
+			compatible = "st,stm32-spi-fifo", "st,stm32-spi";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x41002000 DT_SIZE_K(1)>;
+			clocks = <&rcc STM32_CLOCK(APB1, 0)>;
+			interrupts = <5 0>;
+			status = "disabled";
+		};
+
+		dac1: dac@40006000 {
+			compatible = "st,stm32-dac";
+			reg = <0x40006000 DT_SIZE_K(1)>;
+			clocks = <&rcc STM32_CLOCK(APB0, 11)>;
+			status = "disabled";
+			#io-channel-cells = <1>;
+		};
+
+	};
+};
+

@@ -57,7 +57,7 @@ static const struct device *const gpio_ports[] = {
 
 static void ll_gpio_set_pin_pull(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t Pull)
 {
-#if defined(CONFIG_SOC_SERIES_STM32WB0X)
+#if defined(CONFIG_SOC_SERIES_STM32WB0X) || defined(CONFIG_SOC_SERIES_STM32WL3X)
 	/* On STM32WB0, the PWRC PU/PD control registers should be used instead
 	 * of the GPIO controller registers, so we cannot use LL_GPIO_SetPinPull.
 	 */
@@ -75,7 +75,7 @@ static void ll_gpio_set_pin_pull(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t Pul
 	}
 #else
 	LL_GPIO_SetPinPull(GPIOx, Pin, Pull);
-#endif /* CONFIG_SOC_SERIES_STM32WB0X */
+#endif /* CONFIG_SOC_SERIES_STM32WB0X || CONFIG_SOC_SERIES_STM32WL3X */
 }
 
 const struct device *stm32_gpioport_get(uint32_t port_index)

@@ -3,6 +3,7 @@
 # Copyright (c) 2014-2015 Wind River Systems, Inc.
 # Copyright (c) 2016 Cadence Design Systems, Inc.
 # Copyright (c) 2019 Intel Corp.
+# Copyright (c) 2026 Movu robotics
 # SPDX-License-Identifier: Apache-2.0
 
 if SYS_CLOCK_EXISTS
@@ -126,6 +127,7 @@ source "drivers/timer/Kconfig.silabs"
 source "drivers/timer/Kconfig.smartbond"
 source "drivers/timer/Kconfig.stm32_lptim"
 source "drivers/timer/Kconfig.stm32wb0_radio_timer"
+source "drivers/timer/Kconfig.stm32wl3_radio_timer"
 source "drivers/timer/Kconfig.sy1xx_sys_timer"
 source "drivers/timer/Kconfig.system_timer_lpm"
 source "drivers/timer/Kconfig.ti_dm_timer"
